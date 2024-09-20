@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000; /* Set background to black */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #333; /* Slightly lighter background for container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff; /* White text for contrast */
+        }
+
+        .bar {
+            width: 100%;
+            height: 2px;
+            background-color: #555; /* Grayish bar color */
+            margin: 20px 0;
+        }
+
+        label {
+            font-weight: bold;
+            color: #fff; /* White label text */
+            margin-top: 10px;
+            display: block;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #444; /* Dark background for inputs */
+            color: #fff; /* White text in inputs */
+        }
+
+        button {
+            background-color: #28a745; /* Green button background */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838; /* Slightly darker green on hover */
+        }
+
+        .output {
+            background-color: #444; /* Dark background for the output box */
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: #fff; /* White output text */
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #fff; /* White text for the footer */
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Caesar Cipher</h1>
+        <!-- Adding a horizontal bar to separate the title from the form -->
+        <div class="bar"></div>
+        
+        <label for="mode">Select Mode</label>
+        <select id="mode">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+        </select>
+
+        <label for="key">Enter Key (1-26)</label>
+        <input type="number" id="key" min="1" max="26" value="1">
+
+        <label for="inputText">Enter Text</label>
+        <input type="text" id="inputText" placeholder="Type your text here...">
+
+        <button onclick="runCipher()">Submit</button>
+
+        <div class="output" id="output">Your result will appear here...</div>
+
+        <div class="footer">
+            Developed by Syed.Zain-Ul-Abideen
+        </div>
+    </div>
+
+    <script>
+        const letters = 'abcdefghijklmnopqrstuvwxyz';
+        const numLetters = letters.length;
+
+        function encrypt(plaintext, key) {
+            let ciphertext = '';
+            for (let letter of plaintext) {
+                let lowerLetter = letter.toLowerCase();
+                if (letter !== ' ') {
+                    let index = letters.indexOf(lowerLetter);
+                    if (index === -1) {
+                        ciphertext += letter;
+                    } else {
+                        let newIndex = (index + key) % numLetters;
+                        ciphertext += letters[newIndex];
+                    }
+                } else {
+                    ciphertext += ' ';
+                }
+            }
+            return ciphertext;
+        }
+
+        function decrypt(ciphertext, key) {
+            let plaintext = '';
+            for (let letter of ciphertext) {
+                let lowerLetter = letter.toLowerCase();
+                if (letter !== ' ') {
+                    let index = letters.indexOf(lowerLetter);
+                    if (index === -1) {
+                        plaintext += letter;
+                    } else {
+                        let newIndex = (index - key + numLetters) % numLetters;
+                        plaintext += letters[newIndex];
+                    }
+                } else {
+                    plaintext += ' ';
+                }
+            }
+            return plaintext;
+        }
+
+        function runCipher() {
+            const mode = document.getElementById('mode').value;
+            const key = parseInt(document.getElementById('key').value);
+            const text = document.getElementById('inputText').value;
+
+            let result = '';
+            if (mode === 'encrypt') {
+                result = encrypt(text, key);
+            } else if (mode === 'decrypt') {
+                result = decrypt(text, key);
+            }
+
+            document.getElementById('output').innerText = result;
+        }
+    </script>
+
+</body>
+</html>
